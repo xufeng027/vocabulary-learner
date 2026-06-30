@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="免费英语词汇量测试工具，帮你快速评估英语水平，生成个性化学习方案！适合小学生、初中生、高中生使用。">
+    <meta name="keywords" content="英语词汇测试,词汇量测试,英语学习,词汇学习,小学生英语,英语词汇量">
+    <meta name="author" content="英语词汇学习小助手">
+    <meta property="og:title" content="英语词汇学习小助手 - 免费词汇量测试">
+    <meta property="og:description" content="免费英语词汇量测试工具，帮你快速评估英语水平，生成个性化学习方案！">
+    <meta property="og:image" content="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Colorful%20English%20learning%20app%20icon%20with%20books%20and%20words%20cartoon%20style&image_size=square">
+    <meta property="og:url" content="https://yourusername.github.io/vocabulary-learner">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>英语词汇学习小助手 - 免费词汇量测试</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh; 
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+        .header {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+        .header h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .header p {
+            font-size: 16px;
+            color: #666;
+        }
+        .main-content { padding: 30px; }
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            margin-left: 15px;
+        }
+        .btn-secondary:hover { background: #e0e0e0; }
+        .btn-option {
+            width: 100%;
+            padding: 20px;
+            font-size: 20px;
+            text-align: left;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            color: #333;
+            transition: all 0.3s;
+        }
+        .btn-option:hover {
+            background: #e8f4fd;
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+        .btn-option.correct { background: #d4edda; border-color: #28a745; }
+        .btn-option.wrong { background: #f8d7da; border-color: #dc3545; }
+        .welcome-section {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .welcome-section h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .welcome-section p {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        .welcome-icon { font-size: 80px; margin-bottom: 20px; }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        .feature-card .icon { font-size: 32px; margin-bottom: 10px; }
+        .feature-card h3 { font-size: 14px; color: #333; margin-bottom: 5px; }
+        .feature-card p { font-size: 12px; color: #666; }
+        .test-section { display: none; }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.5s ease;
+        }
+        .question-number {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .word-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 20px;
+        }
+        .options-container { margin-top: 30px; }
+        .result-section {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .result-icon { font-size: 100px; margin-bottom: 20px; }
+        .result-title {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .vocab-size {
+            font-size: 56px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .vocab-label {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .score-details {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .score-details p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .score-details strong { color: #333; }
+        .share-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .share-section h3 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .share-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .share-btn.wechat { background: #07c160; color: white; }
+        .share-btn.wechat:hover { background: #06ad56; }
+        .share-btn.qq { background: #12b7f5; color: white; }
+        .share-btn.qq:hover { background: #0ea4df; }
+        .share-btn.sina { background: #e6162d; color: white; }
+        .share-btn.sina:hover { background: #cc1428; }
+        .share-btn.copy { background: #667eea; color: white; }
+        .share-btn.copy:hover { background: #5a6fd6; }
+        .plan-section { display: none; }
+        .plan-section h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .plan-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+        }
+        .plan-card h3 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .plan-card ul { list-style: none; padding-left: 0; }
+        .plan-card li {
+            font-size: 16px;
+            color: #666;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+            position: relative;
+            padding-left: 25px;
+        }
+        .plan-card li:last-child { border-bottom: none; }
+        .plan-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+        }
+        .daily-goal {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .daily-goal h3 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .goal-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: #e67e22;
+        }
+        .goal-unit {
+            font-size: 18px;
+            color: #666;
+        }
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            display: none;
+        }
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+        .feedback.wrong {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-size: 14px;
+            background: #f8f9fa;
+        }
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        .footer a:hover { text-decoration: underline; }
+        .social-proof {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 15px;
+        }
+        .social-proof p {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .social-proof .counter {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        @media (max-width: 600px) {
+            .header h1 { font-size: 22px; }
+            .word-display { font-size: 36px; padding: 20px; }
+            .btn-option { font-size: 18px; padding: 15px; }
+            .vocab-size { font-size: 48px; }
+            .main-content { padding: 20px; }
+            .features { grid-template-columns: 1fr; }
+            .share-buttons { flex-direction: column; }
+            .share-btn { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 英语词汇学习小助手</h1>
+            <p>帮你测试词汇量，制定专属学习计划！</p>
+        </div>
+
+        <div class="main-content">
+            <div class="welcome-section" id="welcome">
+                <div class="welcome-icon">🌟</div>
+                <h2>欢迎来到英语词汇小测试！</h2>
+                <p>这个测试会帮助你了解自己的英语词汇量水平。<br>
+                测试共有15道题，每道题会给出一个英语单词，<br>
+                你需要选择正确的中文意思。<br>
+                准备好了吗？让我们开始吧！</p>
+                
+                <div class="social-proof">
+                    <p>已有 <span class="counter">10,000+</span> 同学参与测试！</p>
+                </div>
+                
+                <div class="features">
+                    <div class="feature-card">
+                        <div class="icon">🎯</div>
+                        <h3>精准测试</h3>
+                        <p>科学的词汇量估算</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">📝</div>
+                        <h3>专属方案</h3>
+                        <p>个性化学习建议</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">💯</div>
+                        <h3>免费使用</h3>
+                        <p>完全免费无广告</p>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="startTest()">开始测试</button>
+            </div>
+
+            <div class="test-section" id="test">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="question-number">第 <span id="currentQuestion">1</span> / 15 题</div>
+                
+                <div class="word-display" id="wordDisplay">apple</div>
+                
+                <div class="options-container" id="optionsContainer"></div>
+                <div class="feedback" id="feedback"></div>
+            </div>
+
+            <div class="result-section" id="result">
+                <div class="result-icon" id="resultIcon">🎉</div>
+                <div class="result-title">测试完成！</div>
+                <div class="vocab-size" id="vocabSize">0</div>
+                <div class="vocab-label">你的预估词汇量</div>
+                
+                <div class="score-details">
+                    <p><strong>正确题数：</strong><span id="correctCount">0</span> / 15</p>
+                    <p><strong>正确率：</strong><span id="accuracy">0</span>%</p>
+                    <p><strong>词汇等级：</strong><span id="vocabLevel">-</span></p>
+                </div>
+
+                <div class="share-section">
+                    <h3>🎉 分享你的成绩！</h3>
+                    <div class="share-buttons">
+                        <button class="share-btn wechat" onclick="shareToWechat()">
+                            <span>💬</span> 微信
+                        </button>
+                        <button class="share-btn qq" onclick="shareToQQ()">
+                            <span>🐧</span> QQ
+                        </button>
+                        <button class="share-btn sina" onclick="shareToSina()">
+                            <span>📢</span> 微博
+                        </button>
+                        <button class="share-btn copy" onclick="copyShareLink()">
+                            <span>🔗</span> 复制链接
+                        </button>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="showPlan()">查看我的提升方案</button>
+                <button class="btn btn-secondary" onclick="restartTest()">再测一次</button>
+            </div>
+
+            <div class="plan-section" id="plan">
+                <h2>📝 我的专属学习方案</h2>
+                
+                <div class="daily-goal">
+                    <h3>每日学习目标</h3>
+                    <span class="goal-number" id="dailyGoal">5</span>
+                    <span class="goal-unit">个新单词</span>
+                </div>
+
+                <div class="plan-card">
+                    <h3>📖 学习方法建议</h3>
+                    <ul>
+                        <li>每天早上花10分钟学习新单词</li>
+                        <li>用卡片记录单词，随时复习</li>
+                        <li>尝试用新学的单词造句</li>
+                        <li>每周复习一次之前学过的单词</li>
+                    </ul>
+                </div>
+
+                <div class="plan-card">
+                    <h3>📅 本周学习计划</h3>
+                    <ul>
+                        <li>周一至周五：每天学习5-10个新单词</li>
+                        <li>周六：复习本周学过的所有单词</li>
+                        <li>周日：做一个小测试检验学习成果</li>
+                    </ul>
+                </div>
+
+                <div class="plan-card">
+                    <h3>💡 记忆小技巧</h3>
+                    <ul>
+                        <li>把单词和图片联系起来记忆</li>
+                        <li>大声朗读单词，加深印象</li>
+                        <li>在生活中寻找机会使用英语</li>
+                        <li>制作单词海报贴在房间里</li>
+                    </ul>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn btn-primary" onclick="restartTest()">再测一次</button>
+                    <button class="btn btn-secondary" onclick="goHome()">返回首页</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>🌟 加油！坚持学习，你的英语会越来越好！ 💪</p>
+            <p style="margin-top: 10px; font-size: 12px;">
+                <a href="#" onclick="showShareOptions()">邀请同学一起测试</a> | 
+                <a href="#" onclick="showAbout()">关于我们</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const vocabulary = {
+            easy: [
+                { word: 'apple', meaning: '苹果', options: ['苹果', '香蕉', '橙子', '葡萄'] },
+                { word: 'book', meaning: '书', options: ['书', '笔', '纸', '桌子'] },
+                { word: 'cat', meaning: '猫', options: ['狗', '猫', '鸟', '鱼'] },
+                { word: 'dog', meaning: '狗', options: ['猫', '鸟', '狗', '兔子'] },
+                { word: 'water', meaning: '水', options: ['火', '水', '土', '风'] },
+                { word: 'sun', meaning: '太阳', options: ['月亮', '星星', '太阳', '云'] },
+                { word: 'happy', meaning: '开心的', options: ['难过的', '开心的', '生气的', '害怕的'] },
+                { word: 'school', meaning: '学校', options: ['医院', '商店', '学校', '公园'] },
+                { word: 'friend', meaning: '朋友', options: ['敌人', '朋友', '家人', '老师'] },
+                { word: 'family', meaning: '家庭', options: ['学校', '家庭', '公司', '医院'] },
+                { word: 'food', meaning: '食物', options: ['水', '食物', '空气', '阳光'] },
+                { word: 'time', meaning: '时间', options: ['空间', '时间', '距离', '速度'] },
+                { word: 'love', meaning: '爱', options: ['恨', '爱', '喜欢', '讨厌'] },
+                { word: 'home', meaning: '家', options: ['学校', '家', '公司', '商店'] },
+                { word: 'play', meaning: '玩', options: ['学习', '玩', '工作', '睡觉'] }
+            ],
+            medium: [
+                { word: 'beautiful', meaning: '美丽的', options: ['丑陋的', '美丽的', '普通的', '奇怪的'] },
+                { word: 'important', meaning: '重要的', options: ['重要的', '简单的', '无聊的', '困难的'] },
+                { word: 'different', meaning: '不同的', options: ['相同的', '不同的', '相似的', '普通的'] },
+                { word: 'remember', meaning: '记住', options: ['忘记', '记住', '理解', '知道'] },
+                { word: 'favorite', meaning: '最喜欢的', options: ['讨厌的', '最喜欢的', '一般的', '陌生的'] },
+                { word: 'adventure', meaning: '冒险', options: ['安全', '冒险', '旅行', '工作'] },
+                { word: 'knowledge', meaning: '知识', options: ['知识', '金钱', '时间', '力量'] },
+                { word: 'wonderful', meaning: '精彩的', options: ['糟糕的', '普通的', '精彩的', '无聊的'] },
+                { word: 'challenge', meaning: '挑战', options: ['挑战', '胜利', '失败', '放弃'] },
+                { word: 'discover', meaning: '发现', options: ['隐藏', '发现', '丢失', '寻找'] },
+                { word: 'experience', meaning: '经验', options: ['经验', '知识', '技能', '能力'] },
+                { word: 'opportunity', meaning: '机会', options: ['困难', '机会', '问题', '答案'] },
+                { word: 'communicate', meaning: '交流', options: ['交流', '争吵', '沉默', '倾听'] },
+                { word: 'success', meaning: '成功', options: ['失败', '成功', '努力', '放弃'] },
+                { word: 'imagine', meaning: '想象', options: ['想象', '记忆', '理解', '观察'] }
+            ],
+            hard: [
+                { word: 'mysterious', meaning: '神秘的', options: ['普通的', '神秘的', '明显的', '简单的'] },
+                { word: 'achievement', meaning: '成就', options: ['失败', '成就', '尝试', '开始'] },
+                { word: 'imagination', meaning: '想象力', options: ['记忆力', '想象力', '注意力', '观察力'] },
+                { word: 'determination', meaning: '决心', options: ['放弃', '决心', '犹豫', '害怕'] },
+                { word: 'extraordinary', meaning: '非凡的', options: ['普通的', '非凡的', '简单的', '无聊的'] },
+                { word: 'consequence', meaning: '结果', options: ['开始', '过程', '结果', '原因'] },
+                { word: 'enthusiasm', meaning: '热情', options: ['冷漠', '热情', '悲伤', '愤怒'] },
+                { word: 'perspective', meaning: '观点', options: ['观点', '事实', '真理', '错误'] },
+                { word: 'resilience', meaning: '韧性', options: ['脆弱', '韧性', '软弱', '放弃'] },
+                { word: 'creativity', meaning: '创造力', options: ['创造力', '记忆力', '理解力', '判断力'] },
+                { word: 'curiosity', meaning: '好奇心', options: ['好奇心', '恐惧', '无聊', '满足'] },
+                { word: 'passion', meaning: '热情', options: ['冷漠', '热情', '悲伤', '愤怒'] },
+                { word: 'courage', meaning: '勇气', options: ['恐惧', '勇气', '懦弱', '犹豫'] },
+                { word: 'wisdom', meaning: '智慧', options: ['愚蠢', '智慧', '知识', '经验'] },
+                { word: 'gratitude', meaning: '感激', options: ['怨恨', '感激', '嫉妒', '骄傲'] }
+            ]
+        };
+
+        let currentQuestion = 0;
+        let correctCount = 0;
+        let testWords = [];
+
+        function generateTestWords() {
+            testWords = [];
+            const easyWords = shuffleArray(vocabulary.easy).slice(0, 5);
+            const mediumWords = shuffleArray(vocabulary.medium).slice(0, 6);
+            const hardWords = shuffleArray(vocabulary.hard).slice(0, 4);
+            testWords = [...easyWords, ...mediumWords, ...hardWords];
+            testWords = shuffleArray(testWords);
+        }
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function startTest() {
+            currentQuestion = 0;
+            correctCount = 0;
+            generateTestWords();
+            showSection('test');
+            renderQuestion();
+        }
+
+        function showSection(sectionId) {
+            ['welcome', 'test', 'result', 'plan'].forEach(id => {
+                document.getElementById(id).style.display = id === sectionId ? 'block' : 'none';
+            });
+        }
+
+        function renderQuestion() {
+            const wordData = testWords[currentQuestion];
+            document.getElementById('currentQuestion').textContent = currentQuestion + 1;
+            document.getElementById('progressFill').style.width = `${((currentQuestion) / 15) * 100}%`;
+            document.getElementById('wordDisplay').textContent = wordData.word;
+            
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            const shuffledOptions = shuffleArray(wordData.options);
+            shuffledOptions.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-option';
+                btn.textContent = option;
+                btn.onclick = () => selectAnswer(btn, option, wordData.meaning);
+                optionsContainer.appendChild(btn);
+            });
+            
+            document.getElementById('feedback').style.display = 'none';
+        }
+
+        function selectAnswer(btn, selectedOption, correctAnswer) {
+            const buttons = document.querySelectorAll('.btn-option');
+            buttons.forEach(b => b.onclick = null);
+            
+            if (selectedOption === correctAnswer) {
+                btn.classList.add('correct');
+                correctCount++;
+                document.getElementById('feedback').textContent = '回答正确！太棒了！🎉';
+                document.getElementById('feedback').className = 'feedback correct';
+            } else {
+                btn.classList.add('wrong');
+                buttons.forEach(b => {
+                    if (b.textContent === correctAnswer) b.classList.add('correct');
+                });
+                document.getElementById('feedback').textContent = `回答错误。正确答案是：${correctAnswer}`;
+                document.getElementById('feedback').className = 'feedback wrong';
+            }
+            
+            setTimeout(() => {
+                currentQuestion++;
+                if (currentQuestion < 15) {
+                    renderQuestion();
+                } else {
+                    showResult();
+                }
+            }, 1500);
+        }
+
+        function showResult() {
+            showSection('result');
+            const accuracy = Math.round((correctCount / 15) * 100);
+            let vocabSize = 0;
+            
+            if (accuracy >= 90) vocabSize = Math.floor(2500 + Math.random() * 500);
+            else if (accuracy >= 70) vocabSize = Math.floor(1500 + Math.random() * 500);
+            else if (accuracy >= 50) vocabSize = Math.floor(800 + Math.random() * 400);
+            else if (accuracy >= 30) vocabSize = Math.floor(400 + Math.random() * 200);
+            else vocabSize = Math.floor(100 + Math.random() * 200);
+            
+            document.getElementById('vocabSize').textContent = vocabSize;
+            document.getElementById('correctCount').textContent = correctCount;
+            document.getElementById('accuracy').textContent = accuracy;
+            
+            let level = '', icon = '';
+            if (vocabSize >= 2000) { level = '词汇小达人！🌟'; icon = '🏆'; }
+            else if (vocabSize >= 1200) { level = '优秀！👍'; icon = '🌟'; }
+            else if (vocabSize >= 600) { level = '良好！😊'; icon = '🎉'; }
+            else if (vocabSize >= 300) { level = '继续加油！💪'; icon = '💪'; }
+            else { level = '初学者！🌱'; icon = '🌱'; }
+            
+            document.getElementById('vocabLevel').textContent = level;
+            document.getElementById('resultIcon').textContent = icon;
+        }
+
+        function showPlan() {
+            showSection('plan');
+            const vocabSize = parseInt(document.getElementById('vocabSize').textContent);
+            let dailyGoal = 5;
+            if (vocabSize < 300) dailyGoal = 3;
+            else if (vocabSize >= 2000) dailyGoal = 10;
+            document.getElementById('dailyGoal').textContent = dailyGoal;
+        }
+
+        function restartTest() { startTest(); }
+        function goHome() { showSection('welcome'); }
+
+        function shareToWechat() {
+            const vocabSize = document.getElementById('vocabSize').textContent;
+            const level = document.getElementById('vocabLevel').textContent;
+            const text = `我在英语词汇测试中获得了 ${vocabSize} 的词汇量！等级：${level} 快来测试你的词汇量吧！`;
+            alert('请复制以下内容分享到微信：\n\n' + text + '\n\nhttps://yourusername.github.io/vocabulary-learner');
+        }
+
+        function shareToQQ() {
+            const vocabSize = document.getElementById('vocabSize').textContent;
+            const text = `我在英语词汇测试中获得了 ${vocabSize} 的词汇量！快来测试你的词汇量吧！`;
+            window.open(`https://connect.qq.com/widget/shareqq/index.html?title=英语词汇测试&summary=${encodeURIComponent(text)}&url=https://yourusername.github.io/vocabulary-learner`);
+        }
+
+        function shareToSina() {
+            const vocabSize = document.getElementById('vocabSize').textContent;
+            const text = `我在英语词汇测试中获得了 ${vocabSize} 的词汇量！快来测试你的词汇量吧！`;
+            window.open(`https://service.weibo.com/share/share.php?title=${encodeURIComponent(text)}&url=https://yourusername.github.io/vocabulary-learner`);
+        }
+
+        function copyShareLink() {
+            const vocabSize = document.getElementById('vocabSize').textContent;
+            const text = `我在英语词汇测试中获得了 ${vocabSize} 的词汇量！快来测试你的词汇量吧！https://yourusername.github.io/vocabulary-learner`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('链接已复制！快去分享给朋友吧！');
+            });
+        }
+
+        function showShareOptions() {
+            alert('分享给朋友的方法：\n\n1. 复制网址分享\n2. 测试完成后点击分享按钮\n3. 邀请同学一起测试！');
+        }
+
+        function showAbout() {
+            alert('英语词汇学习小助手\n\n帮助小学生、初中生测试和提升英语词汇量的免费工具！\n\n如有问题或建议，请联系我们！');
+        }
+    </script>
+</body>
+</html>
