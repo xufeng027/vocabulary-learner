@@ -326,6 +326,166 @@
             font-weight: bold;
             color: #667eea;
         }
+        .premium-section {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .premium-section::before {
+            content: '⭐';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+        }
+        .premium-section::after {
+            content: '⭐';
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 24px;
+        }
+        .premium-section h3 {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .premium-section .lock-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        .unlock-progress {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .progress-dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #fff;
+            border: 3px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .progress-dot.active {
+            background: #ff9800;
+            border-color: #ff9800;
+            color: white;
+        }
+        .progress-dot.locked {
+            opacity: 0.5;
+        }
+        .premium-features {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .premium-features li {
+            font-size: 16px;
+            color: #666;
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        .premium-features li::before {
+            content: '🔓';
+            position: absolute;
+            left: 0;
+        }
+        .btn-premium {
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-premium:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(255, 152, 0, 0.4);
+        }
+        .btn-premium.locked {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        .badges-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .badge-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid transparent;
+        }
+        .badge-card.locked {
+            opacity: 0.5;
+            border-color: #e9ecef;
+        }
+        .badge-card.unlocked {
+            border-color: #ff9800;
+            background: linear-gradient(135deg, #fff8e1 0%, #fff3e0 100%);
+        }
+        .badge-card .icon { font-size: 36px; margin-bottom: 10px; }
+        .badge-card h4 { font-size: 14px; color: #333; margin-bottom: 5px; }
+        .badge-card p { font-size: 12px; color: #666; }
+        .wrong-book-section {
+            display: none;
+            margin-bottom: 30px;
+        }
+        .wrong-book-section h3 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .wrong-word-item {
+            background: #fff3e0;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .wrong-word-item .word {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        .wrong-word-item .meaning {
+            font-size: 14px;
+            color: #666;
+        }
+        .streak-counter {
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .streak-counter .streak-number {
+            font-size: 36px;
+            font-weight: bold;
+        }
+        .streak-counter .streak-label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
         @media (max-width: 600px) {
             .header h1 { font-size: 22px; }
             .word-display { font-size: 36px; padding: 20px; }
@@ -335,6 +495,7 @@
             .features { grid-template-columns: 1fr; }
             .share-buttons { flex-direction: column; }
             .share-btn { width: 100%; justify-content: center; }
+            .badges-section { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -375,6 +536,27 @@
                         <p>完全免费无广告</p>
                     </div>
                 </div>
+
+                <div class="premium-section" id="premiumSection">
+                    <div class="lock-icon" id="lockIcon">🔒</div>
+                    <h3>🌟 高级版功能</h3>
+                    <div class="unlock-progress" id="unlockProgress">
+                        <div class="progress-dot" id="dot1">1</div>
+                        <div class="progress-dot" id="dot2">2</div>
+                        <div class="progress-dot" id="dot3">3</div>
+                    </div>
+                    <p style="color: #666; margin-bottom: 15px;">分享给 <span style="color: #ff9800; font-weight: bold;">3</span> 位同学解锁高级功能！</p>
+                    <ul class="premium-features" id="premiumFeatures">
+                        <li>📚 更多词汇（500+单词）</li>
+                        <li>❌ 错题本功能</li>
+                        <li>🔥 每日打卡奖励</li>
+                        <li>🏆 成就徽章系统</li>
+                        <li>📊 学习进度统计</li>
+                    </ul>
+                    <button class="btn-premium" id="premiumBtn" onclick="showShareOptions()">
+                        📤 立即分享解锁
+                    </button>
+                </div>
                 
                 <button class="btn btn-primary" onclick="startTest()">开始测试</button>
             </div>
@@ -403,6 +585,29 @@
                     <p><strong>词汇等级：</strong><span id="vocabLevel">-</span></p>
                 </div>
 
+                <div class="badges-section" id="badgesSection">
+                    <div class="badge-card locked" id="badge1">
+                        <div class="icon">🥉</div>
+                        <h4>初级词汇家</h4>
+                        <p>词汇量达到500</p>
+                    </div>
+                    <div class="badge-card locked" id="badge2">
+                        <div class="icon">🥈</div>
+                        <h4>中级词汇家</h4>
+                        <p>词汇量达到1200</p>
+                    </div>
+                    <div class="badge-card locked" id="badge3">
+                        <div class="icon">🥇</div>
+                        <h4>高级词汇家</h4>
+                        <p>词汇量达到2000</p>
+                    </div>
+                </div>
+
+                <div class="wrong-book-section" id="wrongBookSection">
+                    <h3>❌ 错题本</h3>
+                    <div id="wrongBookList"></div>
+                </div>
+
                 <div class="share-section">
                     <h3>🎉 分享你的成绩！</h3>
                     <div class="share-buttons">
@@ -427,6 +632,11 @@
 
             <div class="plan-section" id="plan">
                 <h2>📝 我的专属学习方案</h2>
+                
+                <div class="streak-counter" id="streakCounter">
+                    <div class="streak-number" id="streakNumber">0</div>
+                    <div class="streak-label">连续学习天数</div>
+                </div>
                 
                 <div class="daily-goal">
                     <h3>每日学习目标</h3>
@@ -534,15 +744,143 @@
             ]
         };
 
+        const premiumVocabulary = {
+            easy: [
+                { word: 'orange', meaning: '橙子', options: ['苹果', '橙子', '香蕉', '葡萄'] },
+                { word: 'pencil', meaning: '铅笔', options: ['铅笔', '钢笔', '橡皮', '尺子'] },
+                { word: 'fish', meaning: '鱼', options: ['鸟', '猫', '鱼', '狗'] },
+                { word: 'tree', meaning: '树', options: ['花', '草', '树', '石头'] },
+                { word: 'rain', meaning: '雨', options: ['雪', '风', '雨', '云'] },
+                { word: 'book', meaning: '书', options: ['书', '笔记本', '字典', '杂志'] },
+                { word: 'teacher', meaning: '老师', options: ['学生', '老师', '医生', '警察'] },
+                { word: 'happy', meaning: '快乐的', options: ['悲伤的', '快乐的', '生气的', '害怕的'] },
+                { word: 'big', meaning: '大的', options: ['小的', '大的', '中等的', '微小的'] },
+                { word: 'run', meaning: '跑', options: ['走', '跳', '跑', '爬'] },
+                { word: 'eat', meaning: '吃', options: ['喝', '吃', '睡', '玩'] },
+                { word: 'see', meaning: '看', options: ['听', '闻', '看', '尝'] },
+                { word: 'day', meaning: '白天', options: ['晚上', '白天', '早晨', '下午'] },
+                { word: 'year', meaning: '年', options: ['月', '日', '年', '小时'] },
+                { word: 'work', meaning: '工作', options: ['学习', '工作', '休息', '玩耍'] }
+            ],
+            medium: [
+                { word: 'beautiful', meaning: '美丽的', options: ['丑陋的', '美丽的', '普通的', '奇怪的'] },
+                { word: 'important', meaning: '重要的', options: ['重要的', '简单的', '无聊的', '困难的'] },
+                { word: 'different', meaning: '不同的', options: ['相同的', '不同的', '相似的', '普通的'] },
+                { word: 'remember', meaning: '记住', options: ['忘记', '记住', '理解', '知道'] },
+                { word: 'favorite', meaning: '最喜欢的', options: ['讨厌的', '最喜欢的', '一般的', '陌生的'] },
+                { word: 'adventure', meaning: '冒险', options: ['安全', '冒险', '旅行', '工作'] },
+                { word: 'knowledge', meaning: '知识', options: ['知识', '金钱', '时间', '力量'] },
+                { word: 'wonderful', meaning: '精彩的', options: ['糟糕的', '普通的', '精彩的', '无聊的'] },
+                { word: 'challenge', meaning: '挑战', options: ['挑战', '胜利', '失败', '放弃'] },
+                { word: 'discover', meaning: '发现', options: ['隐藏', '发现', '丢失', '寻找'] },
+                { word: 'experience', meaning: '经验', options: ['经验', '知识', '技能', '能力'] },
+                { word: 'opportunity', meaning: '机会', options: ['困难', '机会', '问题', '答案'] },
+                { word: 'communicate', meaning: '交流', options: ['交流', '争吵', '沉默', '倾听'] },
+                { word: 'success', meaning: '成功', options: ['失败', '成功', '努力', '放弃'] },
+                { word: 'imagine', meaning: '想象', options: ['想象', '记忆', '理解', '观察'] },
+                { word: 'improve', meaning: '提高', options: ['降低', '提高', '保持', '放弃'] },
+                { word: 'practice', meaning: '练习', options: ['练习', '放弃', '开始', '结束'] },
+                { word: 'understand', meaning: '理解', options: ['理解', '误解', '忘记', '记住'] },
+                { word: 'develop', meaning: '发展', options: ['发展', '衰退', '停止', '开始'] },
+                { word: 'learn', meaning: '学习', options: ['学习', '忘记', '教', '玩'] }
+            ],
+            hard: [
+                { word: 'mysterious', meaning: '神秘的', options: ['普通的', '神秘的', '明显的', '简单的'] },
+                { word: 'achievement', meaning: '成就', options: ['失败', '成就', '尝试', '开始'] },
+                { word: 'imagination', meaning: '想象力', options: ['记忆力', '想象力', '注意力', '观察力'] },
+                { word: 'determination', meaning: '决心', options: ['放弃', '决心', '犹豫', '害怕'] },
+                { word: 'extraordinary', meaning: '非凡的', options: ['普通的', '非凡的', '简单的', '无聊的'] },
+                { word: 'consequence', meaning: '结果', options: ['开始', '过程', '结果', '原因'] },
+                { word: 'enthusiasm', meaning: '热情', options: ['冷漠', '热情', '悲伤', '愤怒'] },
+                { word: 'perspective', meaning: '观点', options: ['观点', '事实', '真理', '错误'] },
+                { word: 'resilience', meaning: '韧性', options: ['脆弱', '韧性', '软弱', '放弃'] },
+                { word: 'creativity', meaning: '创造力', options: ['创造力', '记忆力', '理解力', '判断力'] },
+                { word: 'curiosity', meaning: '好奇心', options: ['好奇心', '恐惧', '无聊', '满足'] },
+                { word: 'passion', meaning: '热情', options: ['冷漠', '热情', '悲伤', '愤怒'] },
+                { word: 'courage', meaning: '勇气', options: ['恐惧', '勇气', '懦弱', '犹豫'] },
+                { word: 'wisdom', meaning: '智慧', options: ['愚蠢', '智慧', '知识', '经验'] },
+                { word: 'gratitude', meaning: '感激', options: ['怨恨', '感激', '嫉妒', '骄傲'] },
+                { word: 'inspiration', meaning: '灵感', options: ['灵感', '绝望', '困惑', '迷茫'] },
+                { word: 'motivation', meaning: '动力', options: ['动力', '懒惰', '放弃', '犹豫'] },
+                { word: 'innovation', meaning: '创新', options: ['创新', '传统', '保守', '落后'] },
+                { word: 'compassion', meaning: '同情', options: ['同情', '冷漠', '仇恨', '嫉妒'] },
+                { word: 'dedication', meaning: '奉献', options: ['奉献', '自私', '懒惰', '放弃'] }
+            ]
+        };
+
         let currentQuestion = 0;
         let correctCount = 0;
         let testWords = [];
+        let wrongWords = [];
+        let shareCount = parseInt(localStorage.getItem('shareCount')) || 0;
+        let isPremium = localStorage.getItem('isPremium') === 'true';
+        let streak = parseInt(localStorage.getItem('streak')) || 0;
+        let lastVisit = localStorage.getItem('lastVisit');
+
+        function checkStreak() {
+            const today = new Date().toDateString();
+            if (lastVisit !== today) {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                if (lastVisit === yesterday.toDateString()) {
+                    streak++;
+                } else if (lastVisit !== today) {
+                    streak = 1;
+                }
+                localStorage.setItem('streak', streak);
+                localStorage.setItem('lastVisit', today);
+            }
+            lastVisit = today;
+        }
+
+        function updateUnlockProgress() {
+            const dots = [document.getElementById('dot1'), document.getElementById('dot2'), document.getElementById('dot3')];
+            const lockIcon = document.getElementById('lockIcon');
+            const premiumBtn = document.getElementById('premiumBtn');
+            const premiumSection = document.getElementById('premiumSection');
+            
+            dots.forEach((dot, index) => {
+                if (index < shareCount) {
+                    dot.classList.add('active');
+                    dot.classList.remove('locked');
+                } else {
+                    dot.classList.remove('active');
+                    dot.classList.add('locked');
+                }
+            });
+            
+            if (shareCount >= 3) {
+                isPremium = true;
+                localStorage.setItem('isPremium', 'true');
+                lockIcon.textContent = '✅';
+                premiumBtn.textContent = '🎉 已解锁高级版';
+                premiumBtn.classList.add('locked');
+                premiumBtn.onclick = null;
+                premiumSection.style.background = 'linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%)';
+            } else {
+                lockIcon.textContent = '🔒';
+                premiumBtn.textContent = '📤 立即分享解锁';
+                premiumBtn.classList.remove('locked');
+                premiumBtn.onclick = showShareOptions;
+            }
+        }
+
+        function addShareCount() {
+            shareCount++;
+            localStorage.setItem('shareCount', shareCount);
+            updateUnlockProgress();
+            
+            if (shareCount >= 3 && !isPremium) {
+                alert('🎉 恭喜！你已成功解锁高级版功能！');
+            }
+        }
 
         function generateTestWords() {
             testWords = [];
-            const easyWords = shuffleArray(vocabulary.easy).slice(0, 5);
-            const mediumWords = shuffleArray(vocabulary.medium).slice(0, 6);
-            const hardWords = shuffleArray(vocabulary.hard).slice(0, 4);
+            const vocab = isPremium ? premiumVocabulary : vocabulary;
+            const easyWords = shuffleArray(vocab.easy).slice(0, 5);
+            const mediumWords = shuffleArray(vocab.medium).slice(0, 6);
+            const hardWords = shuffleArray(vocab.hard).slice(0, 4);
             testWords = [...easyWords, ...mediumWords, ...hardWords];
             testWords = shuffleArray(testWords);
         }
@@ -559,6 +897,7 @@
         function startTest() {
             currentQuestion = 0;
             correctCount = 0;
+            wrongWords = [];
             generateTestWords();
             showSection('test');
             renderQuestion();
@@ -584,14 +923,14 @@
                 const btn = document.createElement('button');
                 btn.className = 'btn btn-option';
                 btn.textContent = option;
-                btn.onclick = () => selectAnswer(btn, option, wordData.meaning);
+                btn.onclick = () => selectAnswer(btn, option, wordData.meaning, wordData.word);
                 optionsContainer.appendChild(btn);
             });
             
             document.getElementById('feedback').style.display = 'none';
         }
 
-        function selectAnswer(btn, selectedOption, correctAnswer) {
+        function selectAnswer(btn, selectedOption, correctAnswer, word) {
             const buttons = document.querySelectorAll('.btn-option');
             buttons.forEach(b => b.onclick = null);
             
@@ -607,6 +946,10 @@
                 });
                 document.getElementById('feedback').textContent = `回答错误。正确答案是：${correctAnswer}`;
                 document.getElementById('feedback').className = 'feedback wrong';
+                
+                if (isPremium) {
+                    wrongWords.push({ word, meaning: correctAnswer });
+                }
             }
             
             setTimeout(() => {
@@ -621,6 +964,8 @@
 
         function showResult() {
             showSection('result');
+            checkStreak();
+            
             const accuracy = Math.round((correctCount / 15) * 100);
             let vocabSize = 0;
             
@@ -643,6 +988,49 @@
             
             document.getElementById('vocabLevel').textContent = level;
             document.getElementById('resultIcon').textContent = icon;
+            
+            updateBadges(vocabSize);
+            showWrongBook();
+        }
+
+        function updateBadges(vocabSize) {
+            const badge1 = document.getElementById('badge1');
+            const badge2 = document.getElementById('badge2');
+            const badge3 = document.getElementById('badge3');
+            
+            if (vocabSize >= 500) {
+                badge1.classList.remove('locked');
+                badge1.classList.add('unlocked');
+            }
+            if (vocabSize >= 1200) {
+                badge2.classList.remove('locked');
+                badge2.classList.add('unlocked');
+            }
+            if (vocabSize >= 2000) {
+                badge3.classList.remove('locked');
+                badge3.classList.add('unlocked');
+            }
+        }
+
+        function showWrongBook() {
+            const wrongBookSection = document.getElementById('wrongBookSection');
+            const wrongBookList = document.getElementById('wrongBookList');
+            
+            if (isPremium && wrongWords.length > 0) {
+                wrongBookSection.style.display = 'block';
+                wrongBookList.innerHTML = '';
+                wrongWords.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'wrong-word-item';
+                    div.innerHTML = `
+                        <span class="word">${item.word}</span>
+                        <span class="meaning">${item.meaning}</span>
+                    `;
+                    wrongBookList.appendChild(div);
+                });
+            } else {
+                wrongBookSection.style.display = 'none';
+            }
         }
 
         function showPlan() {
@@ -652,28 +1040,43 @@
             if (vocabSize < 300) dailyGoal = 3;
             else if (vocabSize >= 2000) dailyGoal = 10;
             document.getElementById('dailyGoal').textContent = dailyGoal;
+            document.getElementById('streakNumber').textContent = streak;
         }
 
         function restartTest() { startTest(); }
-        function goHome() { showSection('welcome'); }
+        function goHome() { 
+            showSection('welcome'); 
+            updateUnlockProgress();
+        }
 
         function shareToWechat() {
             const vocabSize = document.getElementById('vocabSize').textContent;
             const level = document.getElementById('vocabLevel').textContent;
             const text = `我在英语词汇测试中获得了 ${vocabSize} 的词汇量！等级：${level} 快来测试你的词汇量吧！`;
-            alert('请复制以下内容分享到微信：\n\n' + text + '\n\nhttps://yourusername.github.io/vocabulary-learner');
+            navigator.clipboard.writeText(text + '\n\nhttps://yourusername.github.io/vocabulary-learner').then(() => {
+                alert('内容已复制！快去微信粘贴分享给朋友吧！');
+                addShareCount();
+            });
         }
 
         function shareToQQ() {
             const vocabSize = document.getElementById('vocabSize').textContent;
             const text = `我在英语词汇测试中获得了 ${vocabSize} 的词汇量！快来测试你的词汇量吧！`;
-            window.open(`https://connect.qq.com/widget/shareqq/index.html?title=英语词汇测试&summary=${encodeURIComponent(text)}&url=https://yourusername.github.io/vocabulary-learner`);
+            navigator.clipboard.writeText(text + '\n\nhttps://yourusername.github.io/vocabulary-learner').then(() => {
+                window.open(`https://connect.qq.com/widget/shareqq/index.html?title=英语词汇测试&summary=${encodeURIComponent(text)}&url=https://yourusername.github.io/vocabulary-learner`);
+                alert('链接已复制！同时已打开QQ分享页面！');
+                addShareCount();
+            });
         }
 
         function shareToSina() {
             const vocabSize = document.getElementById('vocabSize').textContent;
             const text = `我在英语词汇测试中获得了 ${vocabSize} 的词汇量！快来测试你的词汇量吧！`;
-            window.open(`https://service.weibo.com/share/share.php?title=${encodeURIComponent(text)}&url=https://yourusername.github.io/vocabulary-learner`);
+            navigator.clipboard.writeText(text + '\n\nhttps://yourusername.github.io/vocabulary-learner').then(() => {
+                window.open(`https://service.weibo.com/share/share.php?title=${encodeURIComponent(text)}&url=https://yourusername.github.io/vocabulary-learner`);
+                alert('链接已复制！同时已打开微博分享页面！');
+                addShareCount();
+            });
         }
 
         function copyShareLink() {
@@ -681,16 +1084,17 @@
             const text = `我在英语词汇测试中获得了 ${vocabSize} 的词汇量！快来测试你的词汇量吧！https://yourusername.github.io/vocabulary-learner`;
             navigator.clipboard.writeText(text).then(() => {
                 alert('链接已复制！快去分享给朋友吧！');
+                addShareCount();
             });
         }
 
         function showShareOptions() {
-            alert('分享给朋友的方法：\n\n1. 复制网址分享\n2. 测试完成后点击分享按钮\n3. 邀请同学一起测试！');
+            alert('分享给朋友的方法：\n\n1. 复制网址分享\n2. 测试完成后点击分享按钮\n3. 邀请同学一起测试！\n\n分享3次即可解锁高级版！');
         }
 
         function showAbout() {
             alert('英语词汇学习小助手\n\n帮助小学生、初中生测试和提升英语词汇量的免费工具！\n\n如有问题或建议，请联系我们！');
         }
-    </script>
-</body>
-</html>
+
+        checkStreak();
+        updateUnlockProgress();
